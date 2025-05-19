@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
-
+        <title>UserManagementSystem | iThink Logistics</title>
+        <link rel="icon" type="image/png" href="https://itl-dashboard-aws.s3.ap-south-1.amazonaws.com/my/theme2/assets/images/itl-logo.svg">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
