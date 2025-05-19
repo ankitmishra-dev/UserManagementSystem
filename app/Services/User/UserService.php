@@ -24,7 +24,7 @@ class UserService
         return $this->userBO->showUser($user);
     }
 
-    public function updateUser(User $user, array $data): bool
+    public function updateUser(User $user, array $data): User
     {
         return $this->userBO->updateUser($user, $data);
     }

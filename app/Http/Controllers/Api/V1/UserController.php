@@ -44,15 +44,9 @@ class UserController extends Controller
     {
         $dataToUpdate = $request->validated();
 
-        if ($this->userService->updateUser($user, $dataToUpdate)) {
+        $updatedUser = $this->userService->updateUser($user, $dataToUpdate);
 
-            $user->refresh();
-
-            return new UserResource($user);
-
-        } else {
-            return response()->json(['message' => 'User not updated'], 422);
-        }
+        return new UserResource($updatedUser);
 
     }
 

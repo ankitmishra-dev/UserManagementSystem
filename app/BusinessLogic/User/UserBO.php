@@ -26,7 +26,7 @@ class UserBO
         return $this->userRepository->show($user);
     }
 
-    public function updateUser(User $user, array $data): bool
+    public function updateUser(User $user, array $data): User
     {
         return $this->userRepository->update($user, $data);
     }

@@ -2,14 +2,17 @@
 
 namespace App\DataAccess\User;
 
+use App\Contracts\CacheInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 class UserRepository
 {
-    public function find(int $id): ?User
+    private $cache;
+
+    public function __construct(CacheInterface $cache)
     {
-        return Cache::remember("user.$id", 3600, fn () => User::find($id));
+        $this->cache = $cache;
     }
 
     public function all($perPage)
@@ -19,21 +22,37 @@ class UserRepository
 
     public function create(array $data): User
     {
-        return User::create($data);
+        $user = User::create($data);
+
+        $key = 'cache_user_'.$user->id;
+
+        return $this->cache->get($key, fn () => $user, 3600);
     }
 
     public function show(User $user): User
     {
-        return $user;
+        $key = 'cache_user_'.$user->id;
+
+        return $this->cache->get($key, fn () => $user, 3600);
     }
 
-    public function update(User $user, array $data): bool
+    public function update(User $user, array $data): User
     {
-        return $user->update($data);
+        $user->update($data);
+
+        $user->refresh();
+
+        $key = 'cache_user_'.$user->id;
+
+        $this->cache->forget($key); // Here we clear the cache before updating
+
+        return $this->cache->get($key, fn () => $user, 3600);
     }
 
     public function delete(User $user): bool
     {
+        $this->cache->forget('cache_user_'.$user->id);
+
         return $user->delete();
     }
 }
