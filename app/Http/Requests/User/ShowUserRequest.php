@@ -8,7 +8,7 @@ class ShowUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return false; // can show an user
+        return true; // can show an user
     }
 
     public function rules(): array

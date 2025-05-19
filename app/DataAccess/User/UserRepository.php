@@ -12,15 +12,28 @@ class UserRepository
         return Cache::remember("user.$id", 3600, fn () => User::find($id));
     }
 
+    public function all($perPage)
+    {
+        return User::paginate($perPage);
+    }
+
     public function create(array $data): User
     {
         return User::create($data);
     }
 
+    public function show(User $user): User
+    {
+        return $user;
+    }
+
     public function update(User $user, array $data): bool
     {
-        Cache::forget("user.{$user->id}");
-
         return $user->update($data);
+    }
+
+    public function delete(User $user): bool
+    {
+        return $user->delete();
     }
 }
