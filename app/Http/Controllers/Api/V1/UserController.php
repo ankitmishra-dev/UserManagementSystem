@@ -11,13 +11,16 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Services\User\UserService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     // constructor property promotion
     public function __construct(private UserService $userService) {}
 
-    public function index(IndexUserRequest $request)
+    public function index(IndexUserRequest $request): AnonymousResourceCollection
     {
         $perPage = $request->input('per_page', 10);
 
@@ -26,21 +29,21 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): UserResource
     {
         $user = $this->userService->createUser($request->validated());
 
         return new UserResource($user);
     }
 
-    public function show(ShowUserRequest $request, User $user)
+    public function show(ShowUserRequest $request, User $user): UserResource
     {
         $user = $this->userService->showUser($user);
 
         return new UserResource($user);
     }
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user): UserResource
     {
         $dataToUpdate = $request->validated();
 
@@ -50,14 +53,10 @@ class UserController extends Controller
 
     }
 
-    public function destroy(DestroyUserRequest $request, User $user)
+    public function destroy(DestroyUserRequest $request, User $user): Response|JsonResponse
     {
-        if ($this->userService->deleteUser($user)) {
+        $this->userService->deleteUser($user);
 
-            return response()->noContent();
-
-        } else {
-            return response()->json(['message' => 'User not deleted'], 422);
-        }
+        return response()->noContent();
     }
 }

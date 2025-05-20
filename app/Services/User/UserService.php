@@ -9,7 +9,7 @@ class UserService
 {
     public function __construct(protected UserBO $userBO) {}
 
-    public function getAllUsers(int $perPage = 10)
+    public function getAllUsers(int $perPage)
     {
         return $this->userBO->getAllUsers($perPage);
     }

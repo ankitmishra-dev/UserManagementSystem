@@ -4,5 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ithink-logistics', function (Request $request) {
-    return 'V2: I think logistics';
+    return response()->json([
+        'message' => 'ithink-logistics v2 api',
+    ]);
 })->name('ithink-logistics');

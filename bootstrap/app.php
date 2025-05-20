@@ -30,6 +30,4 @@ return Application::configure(basePath: dirname(__DIR__))
             'force.json.response' => ForceJsonResponse::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+    ->withExceptions(function (Exceptions $exceptions) {})->create();
