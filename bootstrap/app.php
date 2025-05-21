@@ -26,8 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'force.json.response' => ForceJsonResponse::class,
+        $middleware->api(prepend: [
+            ForceJsonResponse::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {})->create();
