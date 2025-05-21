@@ -10,6 +10,8 @@ class UserRepository
 {
     private $cache;
 
+    public const CACHE_KEY = 'cache_user_';
+
     public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
@@ -24,14 +26,14 @@ class UserRepository
     {
         $user = User::create($data);
 
-        $key = 'cache_user_'.$user->id;
+        $key = UserRepository::CACHE_KEY.$user->id;
 
         return $this->cache->get($key, fn () => $user, 3600);
     }
 
     public function show(User $user): User
     {
-        $key = 'cache_user_'.$user->id;
+        $key = UserRepository::CACHE_KEY.$user->id;
 
         return $this->cache->get($key, fn () => $user, 3600);
     }
@@ -42,7 +44,7 @@ class UserRepository
 
         $user->refresh();
 
-        $key = 'cache_user_'.$user->id;
+        $key = UserRepository::CACHE_KEY.$user->id;
 
         $this->cache->forget($key); // Here we clear the cache before updating
 
@@ -51,7 +53,7 @@ class UserRepository
 
     public function delete(User $user): bool
     {
-        $this->cache->forget('cache_user_'.$user->id);
+        $this->cache->forget(UserRepository::CACHE_KEY.$user->id);
 
         return $user->delete();
     }
